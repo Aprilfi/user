@@ -24,6 +24,7 @@ $(function(){
         detailView: true,       //父子表
         showToggle:true,       //是否显示详细视图和列表视图的切换按钮
         sortName : "baseDocumentId",
+        height:520,
         locale: 'zh-CN',//中文支持,
         queryParamsType:'',
         queryParams: function queryParams(params) {
@@ -291,6 +292,8 @@ $(function(){
                 if (req) {
                     $('#addModal').modal('hide');
                     $('#table').bootstrapTable('refresh');
+                    $('#txt_username').val("");
+                    $('#txt_description').val("");
                     layer.msg('添加成功', {time: 3000, icon:6});
                     return;
                 }

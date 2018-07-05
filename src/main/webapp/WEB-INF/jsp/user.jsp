@@ -61,12 +61,6 @@
                     </div>
                     <div class="modal-body">
                         <form role="form" action="javascript:void(0)" id="addForm">
-                        <%--<div class="form-group">--%>
-                            <%--<label for="userid">用户编号</label>--%>
-                            <%--<input type="text" name="userid" data-bind="value:userid" class="form-control"--%>
-                                   <%--id="txt_userid" placeholder="用户编号">--%>
-                        <%--</div>--%>
-
                         <div class="form-group">
                             <label for="txt_username">用户姓名</label>
                             <input type="text" name="username" data-bind="value:username" class="form-control"
@@ -91,9 +85,9 @@
 
                         <div class="form-group">
                             <label for="txt_description">用户描述</label>
-                            <input type="text" name="description" data-bind="value:description" class="form-control"
+                            <textarea type="text" name="description" data-bind="value:description" class="form-control"
                                    id="txt_description"
-                                   placeholder="用户描述">
+                                      placeholder="用户描述"></textarea>
                         </div>
                         </form>
                     </div>
@@ -172,16 +166,13 @@
 <script src="../../content/crud.js"></script>
 
 <%--form validater--%>
-<script></script>
+<script src="../../content/validator.js"></script>
 
 <script type="text/javascript">
     $(function() {
         $(function () {
             $('#collapseOne').collapse('hide')
         });
-
-
-
     });
 </script>
 </body>
