@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yidu.surewin.system.dao.AreaMapper">
+  <resultMap id="BaseResultMap" type="com.yidu.surewin.system.domain.Area">
+    <id column="areaId" jdbcType="CHAR" property="areaid" />
+    <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="county" jdbcType="VARCHAR" property="county" />
+    <result column="postCode" jdbcType="CHAR" property="postcode" />
+    <result column="simpleCode" jdbcType="VARCHAR" property="simplecode" />
+    <result column="cityCode" jdbcType="VARCHAR" property="citycode" />
+    <result column="outPortId" jdbcType="CHAR" property="outportid" />
+    <result column="outPort" jdbcType="VARCHAR" property="outport" />
+    <result column="inPortId" jdbcType="CHAR" property="inportid" />
+    <result column="inPort" jdbcType="VARCHAR" property="inport" />
+    <result column="serviceArea" jdbcType="VARCHAR" property="servicearea" />
+    <result column="unserviceArea" jdbcType="VARCHAR" property="unservicearea" />
+    <result column="specialArea" jdbcType="VARCHAR" property="specialarea" />
+    <result column="outerNet" jdbcType="CHAR" property="outernet" />
+    <result column="suburbs" jdbcType="CHAR" property="suburbs" />
+    <result column="areaLevel" jdbcType="VARCHAR" property="arealevel" />
+    <result column="zone" jdbcType="VARCHAR" property="zone" />
+    <result column="cityLevel" jdbcType="VARCHAR" property="citylevel" />
+    <result column="ports" jdbcType="VARCHAR" property="ports" />
+    <result column="useable" jdbcType="CHAR" property="useable" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="remark1" jdbcType="VARCHAR" property="remark1" />
+    <result column="remark2" jdbcType="VARCHAR" property="remark2" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    areaId, province, city, county, postCode, simpleCode, cityCode, outPortId, outPort, 
+    inPortId, inPort, serviceArea, unserviceArea, specialArea, outerNet, suburbs, areaLevel, 
+    zone, cityLevel, ports, useable, description, remark1, remark2
+  </sql>
+  <select id="selectByExample" parameterType="com.yidu.surewin.system.domain.AreaExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'false' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_area
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_area
+    where areaId = #{areaid,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_area
+    where areaId = #{areaid,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" keyColumn="areaId" keyProperty="areaid" parameterType="com.yidu.surewin.system.domain.Area" useGeneratedKeys="true">
+    insert into t_area (province, city, county, 
+      postCode, simpleCode, cityCode, 
+      outPortId, outPort, inPortId, 
+      inPort, serviceArea, unserviceArea, 
+      specialArea, outerNet, suburbs, 
+      areaLevel, zone, cityLevel, 
+      ports, useable, description, 
+      remark1, remark2)
+    values (#{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{county,jdbcType=VARCHAR}, 
+      #{postcode,jdbcType=CHAR}, #{simplecode,jdbcType=VARCHAR}, #{citycode,jdbcType=VARCHAR}, 
+      #{outportid,jdbcType=CHAR}, #{outport,jdbcType=VARCHAR}, #{inportid,jdbcType=CHAR}, 
+      #{inport,jdbcType=VARCHAR}, #{servicearea,jdbcType=VARCHAR}, #{unservicearea,jdbcType=VARCHAR}, 
+      #{specialarea,jdbcType=VARCHAR}, #{outernet,jdbcType=CHAR}, #{suburbs,jdbcType=CHAR}, 
+      #{arealevel,jdbcType=VARCHAR}, #{zone,jdbcType=VARCHAR}, #{citylevel,jdbcType=VARCHAR}, 
+      #{ports,jdbcType=VARCHAR}, #{useable,jdbcType=CHAR}, #{description,jdbcType=VARCHAR}, 
+      #{remark1,jdbcType=VARCHAR}, #{remark2,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="areaId" keyProperty="areaid" parameterType="com.yidu.surewin.system.domain.Area" useGeneratedKeys="true">
+    insert into t_area
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="province != null">
+        province,
+      </if>
+      <if test="city != null">
+        city,
+      </if>
+      <if test="county != null">
+        county,
+      </if>
+      <if test="postcode != null">
+        postCode,
+      </if>
+      <if test="simplecode != null">
+        simpleCode,
+      </if>
+      <if test="citycode != null">
+        cityCode,
+      </if>
+      <if test="outportid != null">
+        outPortId,
+      </if>
+      <if test="outport != null">
+        outPort,
+      </if>
+      <if test="inportid != null">
+        inPortId,
+      </if>
+      <if test="inport != null">
+        inPort,
+      </if>
+      <if test="servicearea != null">
+        serviceArea,
+      </if>
+      <if test="unservicearea != null">
+        unserviceArea,
+      </if>
+      <if test="specialarea != null">
+        specialArea,
+      </if>
+      <if test="outernet != null">
+        outerNet,
+      </if>
+      <if test="suburbs != null">
+        suburbs,
+      </if>
+      <if test="arealevel != null">
+        areaLevel,
+      </if>
+      <if test="zone != null">
+        zone,
+      </if>
+      <if test="citylevel != null">
+        cityLevel,
+      </if>
+      <if test="ports != null">
+        ports,
+      </if>
+      <if test="useable != null">
+        useable,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="remark1 != null">
+        remark1,
+      </if>
+      <if test="remark2 != null">
+        remark2,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="province != null">
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="county != null">
+        #{county,jdbcType=VARCHAR},
+      </if>
+      <if test="postcode != null">
+        #{postcode,jdbcType=CHAR},
+      </if>
+      <if test="simplecode != null">
+        #{simplecode,jdbcType=VARCHAR},
+      </if>
+      <if test="citycode != null">
+        #{citycode,jdbcType=VARCHAR},
+      </if>
+      <if test="outportid != null">
+        #{outportid,jdbcType=CHAR},
+      </if>
+      <if test="outport != null">
+        #{outport,jdbcType=VARCHAR},
+      </if>
+      <if test="inportid != null">
+        #{inportid,jdbcType=CHAR},
+      </if>
+      <if test="inport != null">
+        #{inport,jdbcType=VARCHAR},
+      </if>
+      <if test="servicearea != null">
+        #{servicearea,jdbcType=VARCHAR},
+      </if>
+      <if test="unservicearea != null">
+        #{unservicearea,jdbcType=VARCHAR},
+      </if>
+      <if test="specialarea != null">
+        #{specialarea,jdbcType=VARCHAR},
+      </if>
+      <if test="outernet != null">
+        #{outernet,jdbcType=CHAR},
+      </if>
+      <if test="suburbs != null">
+        #{suburbs,jdbcType=CHAR},
+      </if>
+      <if test="arealevel != null">
+        #{arealevel,jdbcType=VARCHAR},
+      </if>
+      <if test="zone != null">
+        #{zone,jdbcType=VARCHAR},
+      </if>
+      <if test="citylevel != null">
+        #{citylevel,jdbcType=VARCHAR},
+      </if>
+      <if test="ports != null">
+        #{ports,jdbcType=VARCHAR},
+      </if>
+      <if test="useable != null">
+        #{useable,jdbcType=CHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="remark1 != null">
+        #{remark1,jdbcType=VARCHAR},
+      </if>
+      <if test="remark2 != null">
+        #{remark2,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yidu.surewin.system.domain.Area">
+    update t_area
+    <set>
+      <if test="province != null">
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="county != null">
+        county = #{county,jdbcType=VARCHAR},
+      </if>
+      <if test="postcode != null">
+        postCode = #{postcode,jdbcType=CHAR},
+      </if>
+      <if test="simplecode != null">
+        simpleCode = #{simplecode,jdbcType=VARCHAR},
+      </if>
+      <if test="citycode != null">
+        cityCode = #{citycode,jdbcType=VARCHAR},
+      </if>
+      <if test="outportid != null">
+        outPortId = #{outportid,jdbcType=CHAR},
+      </if>
+      <if test="outport != null">
+        outPort = #{outport,jdbcType=VARCHAR},
+      </if>
+      <if test="inportid != null">
+        inPortId = #{inportid,jdbcType=CHAR},
+      </if>
+      <if test="inport != null">
+        inPort = #{inport,jdbcType=VARCHAR},
+      </if>
+      <if test="servicearea != null">
+        serviceArea = #{servicearea,jdbcType=VARCHAR},
+      </if>
+      <if test="unservicearea != null">
+        unserviceArea = #{unservicearea,jdbcType=VARCHAR},
+      </if>
+      <if test="specialarea != null">
+        specialArea = #{specialarea,jdbcType=VARCHAR},
+      </if>
+      <if test="outernet != null">
+        outerNet = #{outernet,jdbcType=CHAR},
+      </if>
+      <if test="suburbs != null">
+        suburbs = #{suburbs,jdbcType=CHAR},
+      </if>
+      <if test="arealevel != null">
+        areaLevel = #{arealevel,jdbcType=VARCHAR},
+      </if>
+      <if test="zone != null">
+        zone = #{zone,jdbcType=VARCHAR},
+      </if>
+      <if test="citylevel != null">
+        cityLevel = #{citylevel,jdbcType=VARCHAR},
+      </if>
+      <if test="ports != null">
+        ports = #{ports,jdbcType=VARCHAR},
+      </if>
+      <if test="useable != null">
+        useable = #{useable,jdbcType=CHAR},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="remark1 != null">
+        remark1 = #{remark1,jdbcType=VARCHAR},
+      </if>
+      <if test="remark2 != null">
+        remark2 = #{remark2,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where areaId = #{areaid,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yidu.surewin.system.domain.Area">
+    update t_area
+    set province = #{province,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      county = #{county,jdbcType=VARCHAR},
+      postCode = #{postcode,jdbcType=CHAR},
+      simpleCode = #{simplecode,jdbcType=VARCHAR},
+      cityCode = #{citycode,jdbcType=VARCHAR},
+      outPortId = #{outportid,jdbcType=CHAR},
+      outPort = #{outport,jdbcType=VARCHAR},
+      inPortId = #{inportid,jdbcType=CHAR},
+      inPort = #{inport,jdbcType=VARCHAR},
+      serviceArea = #{servicearea,jdbcType=VARCHAR},
+      unserviceArea = #{unservicearea,jdbcType=VARCHAR},
+      specialArea = #{specialarea,jdbcType=VARCHAR},
+      outerNet = #{outernet,jdbcType=CHAR},
+      suburbs = #{suburbs,jdbcType=CHAR},
+      areaLevel = #{arealevel,jdbcType=VARCHAR},
+      zone = #{zone,jdbcType=VARCHAR},
+      cityLevel = #{citylevel,jdbcType=VARCHAR},
+      ports = #{ports,jdbcType=VARCHAR},
+      useable = #{useable,jdbcType=CHAR},
+      description = #{description,jdbcType=VARCHAR},
+      remark1 = #{remark1,jdbcType=VARCHAR},
+      remark2 = #{remark2,jdbcType=VARCHAR}
+    where areaId = #{areaid,jdbcType=CHAR}
+  </update>
+</mapper>

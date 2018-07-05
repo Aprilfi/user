@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yidu.surewin.system.dao.OrganizationMapper">
+  <resultMap id="BaseResultMap" type="com.yidu.surewin.system.domain.Organization">
+    <id column="organizationId" jdbcType="CHAR" property="organizationid" />
+    <result column="organizatinName" jdbcType="VARCHAR" property="organizatinname" />
+    <result column="parentId" jdbcType="CHAR" property="parentid" />
+    <result column="parentName" jdbcType="VARCHAR" property="parentname" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="connectPhone" jdbcType="VARCHAR" property="connectphone" />
+    <result column="managerId" jdbcType="CHAR" property="managerid" />
+    <result column="managerName" jdbcType="VARCHAR" property="managername" />
+    <result column="organizationType" jdbcType="CHAR" property="organizationtype" />
+    <result column="remark1" jdbcType="VARCHAR" property="remark1" />
+    <result column="remark2" jdbcType="VARCHAR" property="remark2" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    organizationId, organizatinName, parentId, parentName, description, address, connectPhone, 
+    managerId, managerName, organizationType, remark1, remark2
+  </sql>
+  <select id="selectAll" resultType="com.yidu.surewin.system.domain.Organization">
+    SELECT organizationId,organizatinName FROM t_organization
+  </select>
+  <select id="selectByExample" parameterType="com.yidu.surewin.system.domain.OrganizationExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'false' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_organization
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_organization
+    where organizationId = #{organizationid,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_organization
+    where organizationId = #{organizationid,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" keyColumn="organizationId" keyProperty="organizationid" parameterType="com.yidu.surewin.system.domain.Organization" useGeneratedKeys="true">
+    insert into t_organization (organizatinName, parentId, parentName, 
+      description, address, connectPhone, 
+      managerId, managerName, organizationType, 
+      remark1, remark2)
+    values (#{organizatinname,jdbcType=VARCHAR}, #{parentid,jdbcType=CHAR}, #{parentname,jdbcType=VARCHAR}, 
+      #{description,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{connectphone,jdbcType=VARCHAR}, 
+      #{managerid,jdbcType=CHAR}, #{managername,jdbcType=VARCHAR}, #{organizationtype,jdbcType=CHAR}, 
+      #{remark1,jdbcType=VARCHAR}, #{remark2,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="organizationId" keyProperty="organizationid" parameterType="com.yidu.surewin.system.domain.Organization" useGeneratedKeys="true">
+    insert into t_organization
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="organizatinname != null">
+        organizatinName,
+      </if>
+      <if test="parentid != null">
+        parentId,
+      </if>
+      <if test="parentname != null">
+        parentName,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="connectphone != null">
+        connectPhone,
+      </if>
+      <if test="managerid != null">
+        managerId,
+      </if>
+      <if test="managername != null">
+        managerName,
+      </if>
+      <if test="organizationtype != null">
+        organizationType,
+      </if>
+      <if test="remark1 != null">
+        remark1,
+      </if>
+      <if test="remark2 != null">
+        remark2,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="organizatinname != null">
+        #{organizatinname,jdbcType=VARCHAR},
+      </if>
+      <if test="parentid != null">
+        #{parentid,jdbcType=CHAR},
+      </if>
+      <if test="parentname != null">
+        #{parentname,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="connectphone != null">
+        #{connectphone,jdbcType=VARCHAR},
+      </if>
+      <if test="managerid != null">
+        #{managerid,jdbcType=CHAR},
+      </if>
+      <if test="managername != null">
+        #{managername,jdbcType=VARCHAR},
+      </if>
+      <if test="organizationtype != null">
+        #{organizationtype,jdbcType=CHAR},
+      </if>
+      <if test="remark1 != null">
+        #{remark1,jdbcType=VARCHAR},
+      </if>
+      <if test="remark2 != null">
+        #{remark2,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yidu.surewin.system.domain.Organization">
+    update t_organization
+    <set>
+      <if test="organizatinname != null">
+        organizatinName = #{organizatinname,jdbcType=VARCHAR},
+      </if>
+      <if test="parentid != null">
+        parentId = #{parentid,jdbcType=CHAR},
+      </if>
+      <if test="parentname != null">
+        parentName = #{parentname,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="connectphone != null">
+        connectPhone = #{connectphone,jdbcType=VARCHAR},
+      </if>
+      <if test="managerid != null">
+        managerId = #{managerid,jdbcType=CHAR},
+      </if>
+      <if test="managername != null">
+        managerName = #{managername,jdbcType=VARCHAR},
+      </if>
+      <if test="organizationtype != null">
+        organizationType = #{organizationtype,jdbcType=CHAR},
+      </if>
+      <if test="remark1 != null">
+        remark1 = #{remark1,jdbcType=VARCHAR},
+      </if>
+      <if test="remark2 != null">
+        remark2 = #{remark2,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where organizationId = #{organizationid,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yidu.surewin.system.domain.Organization">
+    update t_organization
+    set organizatinName = #{organizatinname,jdbcType=VARCHAR},
+      parentId = #{parentid,jdbcType=CHAR},
+      parentName = #{parentname,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      connectPhone = #{connectphone,jdbcType=VARCHAR},
+      managerId = #{managerid,jdbcType=CHAR},
+      managerName = #{managername,jdbcType=VARCHAR},
+      organizationType = #{organizationtype,jdbcType=CHAR},
+      remark1 = #{remark1,jdbcType=VARCHAR},
+      remark2 = #{remark2,jdbcType=VARCHAR}
+    where organizationId = #{organizationid,jdbcType=CHAR}
+  </update>
+</mapper>
