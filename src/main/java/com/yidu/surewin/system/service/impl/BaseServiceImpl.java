@@ -3,6 +3,7 @@ package com.yidu.surewin.system.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.yidu.surewin.system.dao.BaseMapper;
 import com.yidu.surewin.system.dao.OrganizationMapper;
+import com.yidu.surewin.system.dao.RoleMapper;
 import com.yidu.surewin.system.dao.UserMapper;
 import com.yidu.surewin.system.domain.Organization;
 import com.yidu.surewin.system.domain.User;
@@ -29,6 +30,9 @@ public class BaseServiceImpl<T> implements BaseService<T> {
 
     @Autowired
     protected OrganizationMapper organizationMapper;
+
+    @Autowired
+    protected RoleMapper roleMapper;
 
     //@Autowired
     //protected UserMapper userMapper;

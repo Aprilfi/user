@@ -3,6 +3,7 @@ package com.yidu.surewin.system.controller;
 import com.yidu.surewin.system.domain.User;
 import com.yidu.surewin.system.service.BaseService;
 import com.yidu.surewin.system.service.OrganizationService;
+import com.yidu.surewin.system.service.RoleService;
 import com.yidu.surewin.system.service.UserService;
 import com.yidu.surewin.system.util.ReadPropertiesUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,9 @@ public class BaseController {
 
     @Autowired
     protected OrganizationService organizationService;
+
+    @Autowired
+    protected RoleService roleService;
 
     //@Autowired
     //protected EmailService emailService;

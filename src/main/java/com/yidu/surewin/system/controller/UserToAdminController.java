@@ -2,10 +2,12 @@ package com.yidu.surewin.system.controller;
 
 import com.yidu.surewin.system.dao.BaseMapper;
 import com.yidu.surewin.system.domain.Organization;
+import com.yidu.surewin.system.domain.Role;
 import com.yidu.surewin.system.domain.User;
 import com.yidu.surewin.system.service.BaseService;
 import com.yidu.surewin.system.util.GeneralUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -93,4 +95,9 @@ public class UserToAdminController extends BaseController {
         return userService.insert(user);
     }
 
+    @ResponseBody
+    @RequestMapping("/selectAllRole.do")
+    public List<Role> allRoleQuery() {
+        return roleService.allTableQuery();
+    }
 }

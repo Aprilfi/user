@@ -1,8 +1,11 @@
 import com.github.pagehelper.PageHelper;
 import com.yidu.surewin.system.dao.OrganizationMapper;
+import com.yidu.surewin.system.dao.RoleMapper;
 import com.yidu.surewin.system.dao.UserMapper;
 import com.yidu.surewin.system.domain.Organization;
+import com.yidu.surewin.system.domain.Role;
 import com.yidu.surewin.system.domain.User;
+import com.yidu.surewin.system.service.RoleService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +26,9 @@ public class BaseTest {
 
     @Autowired
     private OrganizationMapper organizationMapper;
+
+    @Autowired
+    private RoleMapper roleMapper;
 
     @Test
     public void selectAllByPage() {
@@ -52,5 +58,14 @@ public class BaseTest {
         int state = userMapper.updateByPrimaryKey(user);
 
         System.out.println(state);
+    }
+
+    @Test
+    public void selectAllRole() {
+        List<Role> roleList = roleMapper.selectAll();
+
+        for(Role role : roleList) {
+            System.out.printf(role.toString());
+        }
     }
 }

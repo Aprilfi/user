@@ -104,15 +104,15 @@ $(function(){
             title: "操作",
             formatter: function (value, row, index) {
                 var edit =
-                    '<button type="button" class="btn btn-default" onclick="javascript:showUpdateModal(\'' +
+                    '<button type="button" class="btn btn-primary" onclick="javascript:showUpdateModal(\'' +
                     row.userid + '\',\'' + row.username
                     + '\',\'' + row.organizationid + '\',\'' + row.organizatinname +
                     '\',\'' +row.phonenumber + '\',\''
                     + row.useabe + '\',\'' + row.birthdate
-                    + '\',\'' + row.gender + '\',\'' + row.description + '\')"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>更新</button>';
-                var del = '<button type="button" class="btn btn-default" onclick="javascript:dels(\'' +
+                    + '\',\'' + row.gender + '\',\'' + row.description + '\')"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>&nbsp;更新</button>';
+                var del = '&nbsp;&nbsp;<button type="button" class="btn btn-danger" onclick="javascript:dels(\'' +
                     row.userid +
-                    '\')"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除</button>';
+                    '\')"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>&nbsp;删除</button>';
                 return edit + del;
             },
             align: "center",

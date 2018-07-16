@@ -11,7 +11,14 @@
     <link href="../../bootstrap/Content/bootstrap-editable.css" />
     <link href="../../bootstrap/Content/bootstrap-table.min.css" rel="stylesheet" />
     <link href="../../bootstrap/Content/bootstrapValidator.min.css" rel="stylesheet"/>
+    <link href="../../bootstrap/Content/grid/bootstrap-grid.min.css" rel="stylesheet">
     <link href="../../toastr/toastr.css" rel="stylesheet"/>
+
+    <script src="../../bootstrap/Scripts/jquery-1.10.2.js"></script>
+    <script src="../../bootstrap/Scripts/bootstrap.min.js"></script>
+    <link href="../../bootstrap/Content/treeview/bootstrap-treeview.css" rel="stylesheet">
+    <script src="../../bootstrap/Scripts/treeview/bootstrap-treeview.js"></script>
+
 
 
     <style>
@@ -98,8 +105,30 @@
                 <button id="btn_add" type="button" class="btn btn-default">
                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
                 </button>
+                <button id="role_open" type="button" class="btn btn-default">
+                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span>分配角色
+                </button>
             </div>
             <table id="table"></table>
+
+
+            <%--右侧角色分配操作栏--%>
+            <div id="sampledata2" class="bringins-content">
+                <div class="row">
+                    <h4 class="col-lg-offset-4">姓名：小明</h4>
+                    <hr/>
+                    <div class="col-md-12">
+                        <div id="treeview-checkable" class=""></div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <button class="btn btn-primary col-lg-offset-9" id="role_save">
+                            <span class="glyphicon glyphicon-save-file">保存</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
 
         </div>
 
@@ -161,7 +190,6 @@
         </div>
 
         <%--弹出层-修改--%>
-        <!-- 更新 -->
         <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -234,8 +262,7 @@
             </div>
         </div>
 
-<script src="../../bootstrap/Scripts/jquery-1.9.1.min.js"></script>
-<script src="../../bootstrap/Scripts/bootstrap.min.js"></script>
+
 <script src="../../bootstrap/Scripts/bootstrap-editable.js"></script>
 <script src="../../bootstrap/Scripts/bootstrap-table/bootstrap-table.min.js"></script>
 <script src="../../bootstrap/Scripts/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
@@ -244,6 +271,7 @@
 <script src="../../toastr/toastr.js"></script>
 <script src="../../bootstrap/Scripts/export/tableExport.js"></script>
 <script src="../../bootstrap/Scripts/export/bootstrap-table-export.js"></script>
+<script src="../../bootstrap/Scripts/bringins.js"></script>
 
 <%--form validater--%>
 <script src="../../content/validator.js"></script>
@@ -257,11 +285,65 @@
         $(function () {
             $('#collapseOne').collapse('hide');
 
+            //初始化用户提示层
             initToastr();
 
+            //表单验证
             addformValidator();
 
+            // 更新验证
             updateformValidator();
+
+            var json = '[{"text": "Parent 1"},{"text": "Parent 2"},{"text": "Parent 3"},' +
+                '{' +
+                '"text": "Parent 4"' +
+                '},' +
+                '{' +
+                '"text": "Parent 5"' +
+                '}' +
+                ']';
+
+            $.ajax({
+                url: "/admin/selectAllRole.do",
+                type: "post",
+                dataType: "json",
+                success: function (result) {
+                    var roleJSON = '[';
+                    for(var item in result) {
+                        roleJSON += '{"text":"' + result[item].rolename +'"},'
+                    }
+                    roleJSON = roleJSON.substring(0, roleJSON.lastIndexOf(",")) + ']';
+
+                    var $checkableTree = $('#treeview-checkable').treeview({
+                        data: roleJSON,
+                        showIcon: true,
+                        showCheckbox: true,
+                        onNodeChecked: function(event, node) {
+                            $('#checkable-output').prepend('<p>' + node.text + ' was checked</p>');
+                        },
+                        onNodeUnchecked: function (event, node) {
+                            $('#checkable-output').prepend('<p>' + node.text + ' was unchecked</p>');
+                        }
+                    });
+                }
+            });
+
+
+
+            // 右侧分配角色操作栏
+
+            $('#role_open').click(function(){
+
+
+                $('#sampledata2').bringins({
+                    "position":"right",
+                    "color":"#fff",
+                    "width":"30%",
+                    "closeButton":"black"
+                });
+            });
+
+            // 动态select下拉框赋值
 
             $('#search').click(function () {
                 $.ajax({
@@ -278,6 +360,8 @@
                     }
                 });
             });
+
+            // 条件搜索按钮点击
             
             $("#btn_search").click(function () {
                 $("#table").bootstrapTable('refresh');
