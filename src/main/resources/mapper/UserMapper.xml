@@ -54,6 +54,39 @@
   </select>
   <select id="selectAll" resultType="com.yidu.surewin.system.domain.User">
     SELECT * FROM t_user
+    <where>
+      <if test="username != null">
+        userName = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="salt != null">
+        salt = #{salt,jdbcType=VARCHAR},
+      </if>
+      <if test="organizationid != null">
+        organizationId = #{organizationid,jdbcType=CHAR},
+      </if>
+      <if test="organizatinname != null">
+        organizatinName = #{organizatinname,jdbcType=VARCHAR},
+      </if>
+      <if test="phonenumber != null">
+        phoneNumber = #{phonenumber,jdbcType=VARCHAR},
+      </if>
+      <if test="useabe != null">
+        useabe = #{useabe,jdbcType=CHAR},
+      </if>
+      <if test="birthdate != null">
+        birthdate = #{birthdate,jdbcType=DATE},
+      </if>
+      <if test="gender != null">
+        gender = #{gender,jdbcType=CHAR},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+    </where>
+
   </select>
   <select id="selectByExample" parameterType="com.yidu.surewin.system.domain.UserExample" resultMap="BaseResultMap">
     select

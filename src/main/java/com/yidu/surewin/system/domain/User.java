@@ -53,6 +53,14 @@ public class User implements Serializable {
         this.remark2 = remark2;
     }
 
+    public User(String username, String organizationid, String phonenumber, String useabe, String gender) {
+        this.username = username;
+        this.organizationid = organizationid;
+        this.phonenumber = phonenumber;
+        this.useabe = useabe;
+        this.gender = gender;
+    }
+
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }

@@ -6,42 +6,42 @@ $(function(){
         url: "/admin/findByPage.do",//这个接口需要处理bootstrap table传递的固定参数
         method: 'post',
         toolbar: '#toolbar',    //工具按钮用哪个容器
-        striped: true,      //是否显示行间隔色
         cache: false,      //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
         pagination: true,     //是否显示分页
         dataType: "json",
-        direction: 'asc',
+        //search: true,
+        sortable: true,
+        sortOrder: "asc",
         disabled: false,        //排序方式
         contentType:"application/x-www-form-urlencoded",
         pageNumber: 1,      //初始化加载第一页，默认第一页
         pageSize: 5,      //每页的记录行数
         pageList: [5, 10, 25, 50, 100],  //可供选择的每页的行数
         sidePagination: "server",   //分页方式：client客户端分页，server服务端分页
-        showRefresh: true,     //是否显示刷新按钮
-        showColumns: true,      //是否显示所有的列
+        showRefresh: false,     //是否显示刷新按钮
+        //showColumns: true,      //是否显示所有的列
         clickToSelect: true,    //是否启用点击选中行
         buttonsAlign:"right",  //按钮位置
         detailView: true,       //父子表
-        showToggle:true,       //是否显示详细视图和列表视图的切换按钮
+        showExport: true,       //显示导出
+        striped: true,          //隔行变色
+        exportDataType: "basic",
+        //showToggle:true,       //是否显示详细视图和列表视图的切换按钮
         sortName : "baseDocumentId",
-        height:520,
         locale: 'zh-CN',//中文支持,
         queryParamsType:'',
         queryParams: function queryParams(params) {
             var param = {
                 pageNumber: params.pageNumber,
-                pageSize: params.pageSize
+                pageSize: params.pageSize,
+
+                username: $('#search_username').val(),
+                organizationid: $('#search_organizatiname').val(),
+                phonenumber: $('#search_phonenumber').val(),
+                useabe: $('#search_useabe').val(),
+                gender: $('#search_gender').val()
             };
             return param;
-        },
-        rowStyle: function (row, index) {
-            var strColor = 'active';
-
-            if (!row.useabe.indexOf("N")) {
-                strColor = 'danger';
-            }
-
-            return {classes : strColor}
         },
         columns: [{
             title: "全选", field: "select", checkbox: true, width: 20,align: "center",valign: "middle"//垂直
@@ -52,13 +52,7 @@ $(function(){
             field: 'username',
             title: '用户名',
             align: "center",
-            editable: {
-                type: 'text',
-                title: '组织结构名称',
-                validate: function (v) {
-                    if (!v) return '名称不能为空';
-                }
-            },
+
         }, {
             field: 'organizationid',
             visible:false,
@@ -66,27 +60,12 @@ $(function(){
             field: 'organizatinname',
             title: '组织结构名称',
             align: "center",
-            validate: function (value) { //字段验证
-                if (!$.trim(value)) {
-                    return '不能为空';
-                }
-            }
+
         }, {
             field: 'phonenumber',
             title: '联系电话',
             align: "center",
-            editable: {
-                type: 'text',
-                title: '联系电话',
-                validate: function (v) {
-                    if (!v) return '联系电话不能为空';
-                }
-            },
-            validate: function (value) { //字段验证
-                if (!$.trim(value)) {
-                    return '不能为空';
-                }
-            }
+
         }, {
             field: 'useabe',
             title: '是否可用',
@@ -103,28 +82,12 @@ $(function(){
             // formatter: function (value, row, index) {
             //     return new Date(parseInt(("/Date("+row.birthdate+")/").substr(6, 13))).toLocaleDateString();
             // },
-            editable: {
-                type: 'text',
-                title: '出生日期',
-                validate: function (v) {
-                    if (!v) return '出生日期不能为空';
-                }
-            },
-            validate: function (value) { //字段验证
-                if (!$.trim(value)) {
-                    return '不能为空';
-                }
-            }
+
         }, {
             field: 'gender',
             title: '性别',
             align: "center",
-            editable: {
-                type: 'select',
-                title: '性别',
-                source: [{ value: "男", text: "男" }, { value: "女", text: "女" }],
 
-            },
         },{
             field: 'description',
             title: '用户描述',
@@ -136,11 +99,6 @@ $(function(){
                     if (!v) return '用户描述不能为空';
                 }
             },
-            validate: function (value) { //字段验证
-                if (!$.trim(value)) {
-                    return '不能为空';
-                }
-            }
         },{
             field: "operation",
             title: "操作",
@@ -248,9 +206,9 @@ $(function(){
                 if (req) {
                     $('#updateModal').modal('hide');
                     $('#table').bootstrapTable('refresh');
-                    layer.msg('更新成功', {time: 3000, icon:6});
+                    toastr.success('更新成功!');
                 } else {
-                    layer.msg('更新失败', {time: 3000, icon:6});
+                    toastr.error('更新失败!');
                 }
             },
             error: function(req){}
@@ -272,13 +230,19 @@ $(function(){
                 $("#joke_organizatinName").append(h);//append 添加进去并展示
             }
         });
+    // .on('hidden.bs.modal', function () {})
         $("#myModal").modal().on("shown.bs.modal", function () {
-        }).on('hidden.bs.modal', function () {
         });
+
     });
 
     //添加数据
     $("#addRecord").click(function(){
+        $("#addForm").data('bootstrapValidator').validate();
+        if(!$("#addForm").data('bootstrapValidator').isValid()){
+            toastr.success('提交失败!');
+            return ;
+        };
         $("#txt_organizationId").val($("#joke_organizatinName").val().split(",")[0]);
         $("#txt_organizatinname").val($("#joke_organizatinName").val().split(",")[1]);
 
@@ -294,11 +258,11 @@ $(function(){
                     $('#table').bootstrapTable('refresh');
                     $('#txt_username').val("");
                     $('#txt_description').val("");
-                    layer.msg('添加成功', {time: 3000, icon:6});
+                    toastr.success('添加成功!');
                     return;
                 }
                 //捕获页
-                layer.msg('添加失败', {time: 3000, icon:6});
+                toastr.error('添加失败!');
             },
             error: function(req){}
         });
@@ -349,7 +313,7 @@ function dels(ids) {
         if(undefined == ids){
             ids = getIdSelections();
             //捕获页
-            layer.msg('请选择一行及以上的数据', {time: 3000, icon:6});
+            toastr.warning('请选择一行及以上的数据');
         }
 
         $.ajax({
@@ -360,10 +324,10 @@ function dels(ids) {
             success : function(req) {
                 if (req) {
                     $('#table').bootstrapTable('refresh');
-                    layer.msg('删除成功', {time: 3000, icon:6});
+                    toastr.success('删除成功');
                     return;
                 }
-                layer.msg('删除失败', {time: 3000, icon:6});
+                toastr.error('删除失败');
 
             },
             error : function(req) {}

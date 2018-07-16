@@ -15,4 +15,6 @@ public class UserServiceImpl extends BaseServiceImpl<User>
     public List<User> selectByExample(UserExample example) {
         return null;
     }
+
+
 }

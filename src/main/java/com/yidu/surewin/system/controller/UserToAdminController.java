@@ -20,14 +20,28 @@ public class UserToAdminController extends BaseController {
 
     @ResponseBody
     @RequestMapping("/findByPage.do")
-    public Map<String, Object> findByPage(int pageSize, int pageNumber) {
+    public Map<String, Object> findByPage(int pageSize, int pageNumber
+            , String username, String organizationid
+            , String phonenumber, String useable
+            , String gender) {
+
         System.out.println("pagesize:"+pageSize+" pagenumber:"+pageNumber);
-        return userService.queryByPage(pageNumber, pageSize);
+
+        System.out.println(username + "-----" + organizationid + "-----" + phonenumber + "-----" + useable + "-----" + gender);
+
+        User user = new User(username, organizationid, phonenumber, useable, gender);
+
+        return userService.queryByPage(pageNumber, pageSize, user);
     }
 
     @RequestMapping("/user.do")
     public String toOrders() {
         return "user";
+    }
+
+    @RequestMapping("/user_role.do")
+    public String toOrdersAndRole() {
+        return "user_role";
     }
 
     @ResponseBody

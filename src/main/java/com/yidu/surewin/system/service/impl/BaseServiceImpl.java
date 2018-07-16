@@ -69,7 +69,7 @@ public class BaseServiceImpl<T> implements BaseService<T> {
     }
 
     @Override
-    public Map<String, Object> queryByPage(int pageNumber, int pageSize) {
+    public Map<String, Object> queryByPage(int pageNumber, int pageSize, User user) {
         Map<String,Object> result = new HashMap<String,Object>();
         int total= baseMapper.getTableCount();
         //分页查询

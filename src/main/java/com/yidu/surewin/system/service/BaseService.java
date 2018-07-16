@@ -1,5 +1,7 @@
 package com.yidu.surewin.system.service;
 
+import com.yidu.surewin.system.domain.User;
+
 import java.util.List;
 import java.util.Map;
 
@@ -14,7 +16,7 @@ public interface BaseService<T> {
 
     List<T> allTableQuery();
 
-    Map<String, Object> queryByPage(int pageNumber, int pagesize);
+    Map<String, Object> queryByPage(int pageNumber, int pagesize, User user);
 
     boolean insert(T entity);
 
