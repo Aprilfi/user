@@ -2,9 +2,11 @@ import com.github.pagehelper.PageHelper;
 import com.yidu.surewin.system.dao.OrganizationMapper;
 import com.yidu.surewin.system.dao.RoleMapper;
 import com.yidu.surewin.system.dao.UserMapper;
+import com.yidu.surewin.system.dao.UserRoleMapper;
 import com.yidu.surewin.system.domain.Organization;
 import com.yidu.surewin.system.domain.Role;
 import com.yidu.surewin.system.domain.User;
+import com.yidu.surewin.system.domain.UserRole;
 import com.yidu.surewin.system.service.RoleService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,6 +32,9 @@ public class BaseTest {
     @Autowired
     private RoleMapper roleMapper;
 
+    @Autowired
+    private UserRoleMapper userRoleMapper;
+
     @Test
     public void selectAllByPage() {
         int total = userMapper.getTableCount();
@@ -37,7 +42,7 @@ public class BaseTest {
 
         System.out.println("******total:" + total);
 
-        List<User> userList = userMapper.selectAll();
+        List<User> userList = userMapper.selectAll(null);
 
         for(User user : userList) {
             System.out.println(user.toString());
@@ -62,9 +67,9 @@ public class BaseTest {
 
     @Test
     public void selectAllRole() {
-        List<Role> roleList = roleMapper.selectAll();
+        List<UserRole> roleList = userRoleMapper.selectAll(null);
 
-        for(Role role : roleList) {
+        for(UserRole role : roleList) {
             System.out.printf(role.toString());
         }
     }

@@ -14,9 +14,9 @@ public interface BaseService<T> {
 
     int tableCountQuery();
 
-    List<T> allTableQuery();
+    List<T> allTableQuery(T t);
 
-    Map<String, Object> queryByPage(int pageNumber, int pagesize, User user);
+    Map<String, Object> queryByPage(int pageNumber, int pagesize, T t);
 
     boolean insert(T entity);
 
@@ -26,7 +26,7 @@ public interface BaseService<T> {
 
     List<T> selectByPrimaryKey(String id);
 
-    List<T> findOrganizationItem();
+    List<T> findOrganizationItem(T t);
 
     int updateByPrimaryKeySelective(T entity);
 

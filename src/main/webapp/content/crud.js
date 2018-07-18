@@ -191,6 +191,12 @@ $(function(){
             }, ],
         });
     };
+
+    // 查询数据
+    $("#btn_search").click(function () {
+        $('#table').bootstrapTable('refresh');
+    })
+    //-------------
     //更新数据
     $("#updateRecord").click(function(){
         $("#organizationid").val($("#update_organizatinname").val().split(",")[0]);

@@ -11,7 +11,7 @@ public class GeneralUtils {
     public static String generateId() {
         UUID uuid=UUID.randomUUID();
         String str = uuid.toString();
-        String uuidStr=str.replace("-", "");
+        String uuidStr=str.replace("-", " ");
         return uuidStr;
     }
 

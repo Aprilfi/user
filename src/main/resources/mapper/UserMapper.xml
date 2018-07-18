@@ -55,35 +55,20 @@
   <select id="selectAll" resultType="com.yidu.surewin.system.domain.User">
     SELECT * FROM t_user
     <where>
-      <if test="username != null">
-        userName = #{username,jdbcType=VARCHAR},
+      <if test="username != null and username != ''">
+        userName = #{username,jdbcType=VARCHAR}
       </if>
-      <if test="password != null">
-        password = #{password,jdbcType=VARCHAR},
+      <if test="organizationid != null and organizationid != ''">
+        AND organizationId = #{organizationid,jdbcType=CHAR}
       </if>
-      <if test="salt != null">
-        salt = #{salt,jdbcType=VARCHAR},
+      <if test="phonenumber != null and phonenumber != ''">
+        AND phoneNumber = #{phonenumber,jdbcType=VARCHAR}
       </if>
-      <if test="organizationid != null">
-        organizationId = #{organizationid,jdbcType=CHAR},
+      <if test="useabe != null and useabe != ''">
+        AND useabe = #{useabe,jdbcType=CHAR}
       </if>
-      <if test="organizatinname != null">
-        organizatinName = #{organizatinname,jdbcType=VARCHAR},
-      </if>
-      <if test="phonenumber != null">
-        phoneNumber = #{phonenumber,jdbcType=VARCHAR},
-      </if>
-      <if test="useabe != null">
-        useabe = #{useabe,jdbcType=CHAR},
-      </if>
-      <if test="birthdate != null">
-        birthdate = #{birthdate,jdbcType=DATE},
-      </if>
-      <if test="gender != null">
-        gender = #{gender,jdbcType=CHAR},
-      </if>
-      <if test="description != null">
-        description = #{description,jdbcType=VARCHAR},
+      <if test="gender != null and gender != ''">
+        AND gender = #{gender,jdbcType=CHAR}
       </if>
     </where>
 

@@ -1,10 +1,7 @@
 package com.yidu.surewin.system.service.impl;
 
 import com.github.pagehelper.PageHelper;
-import com.yidu.surewin.system.dao.BaseMapper;
-import com.yidu.surewin.system.dao.OrganizationMapper;
-import com.yidu.surewin.system.dao.RoleMapper;
-import com.yidu.surewin.system.dao.UserMapper;
+import com.yidu.surewin.system.dao.*;
 import com.yidu.surewin.system.domain.Organization;
 import com.yidu.surewin.system.domain.User;
 import com.yidu.surewin.system.service.BaseService;
@@ -33,6 +30,9 @@ public class BaseServiceImpl<T> implements BaseService<T> {
 
     @Autowired
     protected RoleMapper roleMapper;
+
+    @Autowired
+    protected UserRoleMapper userRoleMapper;
 
     //@Autowired
     //protected UserMapper userMapper;
@@ -68,17 +68,17 @@ public class BaseServiceImpl<T> implements BaseService<T> {
     }
 
     @Override
-    public List<T> allTableQuery() {
-        return baseMapper.selectAll();
+    public List<T> allTableQuery(T t) {
+        return baseMapper.selectAll(t);
     }
 
     @Override
-    public Map<String, Object> queryByPage(int pageNumber, int pageSize, User user) {
+    public Map<String, Object> queryByPage(int pageNumber, int pageSize, T t) {
         Map<String,Object> result = new HashMap<String,Object>();
         int total= baseMapper.getTableCount();
         //分页查询
         PageHelper.startPage(pageNumber, pageSize);
-        List<T> rows = baseMapper.selectAll();
+        List<T> rows = baseMapper.selectAll(t);
         result.put("total",total);
         result.put("rows",rows);
         return result;
@@ -116,10 +116,10 @@ public class BaseServiceImpl<T> implements BaseService<T> {
     }
 
     @Override
-    public List<T> findOrganizationItem() {
-        List<T> tList = baseMapper.selectAll();
+    public List<T> findOrganizationItem(T t) {
+        List<T> tList = baseMapper.selectAll(t);
 
-        return baseMapper.selectAll();
+        return baseMapper.selectAll(t);
     }
 
     public int updateByPrimaryKeySelective(T entity) {

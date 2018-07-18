@@ -14,7 +14,7 @@ public interface BaseMapper<T> {
 
     int getTableCount();
 
-    List<T> selectAll();
+    List<T> selectAll(T t);
 
     int insert(T entity);
 

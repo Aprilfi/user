@@ -89,6 +89,7 @@
                                         <div class="input-group">
                                             <span class="input-group-addon">&nbsp;&nbsp;&nbsp;性别&nbsp;&nbsp;&nbsp;</span>
                                             <select name="gender" id="search_gender" class="form-control">
+                                                <option value="">全部</option>
                                                 <option value="男">男</option>
                                                 <option value="女">女</option>
                                             </select>
@@ -115,15 +116,15 @@
             <%--右侧角色分配操作栏--%>
             <div id="sampledata2" class="bringins-content">
                 <div class="row">
-                    <h4 class="col-lg-offset-4">姓名：小明</h4>
-                    <hr/>
+                    <h4 id="sampTitle" class="col-lg-offset-1">用户角色分配</h4>
+                    <hr style="color: #aaaaaa;"/>
                     <div class="col-md-12">
                         <div id="treeview-checkable" class=""></div>
                     </div>
 
                     <div class="col-md-12">
                         <button class="btn btn-primary col-lg-offset-9" id="role_save">
-                            <span class="glyphicon glyphicon-save-file">保存</span>
+                            <span id="userrole_save" class="glyphicon glyphicon-save-file">保存</span>
                         </button>
                     </div>
                 </div>
@@ -287,61 +288,132 @@
 
             //初始化用户提示层
             initToastr();
+            //----------------
 
             //表单验证
             addformValidator();
+            //----------------
 
             // 更新验证
             updateformValidator();
+            //----------------
 
-            var json = '[{"text": "Parent 1"},{"text": "Parent 2"},{"text": "Parent 3"},' +
-                '{' +
-                '"text": "Parent 4"' +
-                '},' +
-                '{' +
-                '"text": "Parent 5"' +
-                '}' +
-                ']';
+            var json =   [{text:"Node 1", state: {checked:true, selected:true}}, {text:"Parent 3"},{text:"Parent 4"},{text:"Parent 5"}];
+            json[1]["state"] = {"checked":true, "selected":true};
 
-            $.ajax({
-                url: "/admin/selectAllRole.do",
-                type: "post",
-                dataType: "json",
-                success: function (result) {
-                    var roleJSON = '[';
-                    for(var item in result) {
-                        roleJSON += '{"text":"' + result[item].rolename +'"},'
-                    }
-                    roleJSON = roleJSON.substring(0, roleJSON.lastIndexOf(",")) + ']';
-
-                    var $checkableTree = $('#treeview-checkable').treeview({
-                        data: roleJSON,
-                        showIcon: true,
-                        showCheckbox: true,
-                        onNodeChecked: function(event, node) {
-                            $('#checkable-output').prepend('<p>' + node.text + ' was checked</p>');
-                        },
-                        onNodeUnchecked: function (event, node) {
-                            $('#checkable-output').prepend('<p>' + node.text + ' was unchecked</p>');
+            //根据用户加载操作栏
+            function loding(id, name) {
+                $.ajax({
+                    url: "/admin/selectAllRole.do",
+                    type: "post",
+                    dataType: "json",
+                    success: function (result) {
+                        var roleJSON = '[{"text":"用户：' + name + '","nodes":[';
+                        var roleidList = new Array();
+                        for(var item in result) {
+                            roleJSON += '{"text":"' + result[item].rolename +'","href":"' + result[item].roleid + ',' + id + '"},';
+                            roleidList.push(result[item].roleid);
+                            console.log(result[item].roleid);
                         }
-                    });
+                        roleJSON = roleJSON.substring(0, roleJSON.lastIndexOf(",")) + ']}]';
+                        var roleObj = JSON.parse(roleJSON);
+                        $.ajax({
+                            url: "/admin/selectUserRoleById.do" ,
+                            type: "post",
+                            data: {id:id},
+                            dataType: "json",
+                            success: function (result) {
+                                if (result[0].remark1 == "false") {
+                                    toastr.warning('未找到相关信息');
+                                }else {
+                                    $('#sampledata2').bringins({
+                                        "position":"right",
+                                        "color":"#f2f5f7",
+                                        "width":"30%",
+                                        "closeButton":"black"
+                                    });
+                                    var index ;
+                                    console.log("roleid:" + result[0].roleid + "role:" + roleidList[0])
+                                    for (var temp in roleidList) {
+                                        if (result[0].roleid == roleidList[temp]) {
+                                            index = temp;
+                                        }
+                                    }
+                                    console.log("index:" + index)
+                                    roleObj[0].nodes[index]["state"] = {"checked":true,"selected":true};
+                                }
+
+                                var $checkableTree = $('#treeview-checkable').treeview({
+                                    data: roleObj,
+                                    showIcon: true,
+                                    showCheckbox: true,
+                                    multiSelect: false,    //多选
+                                    onNodeChecked: function(event, node) {
+                                        $('#checkable-output').prepend('<p>' + node.text + ' was checked</p>');
+                                    },
+                                    onNodeUnchecked: function (event, node) {
+                                        $('#checkable-output').prepend('<p>' + node.text + ' was unchecked</p>');
+                                    }
+                                });
+                            }
+                        });
+
+
+
+
+                    }
+                });
+            }
+            //------------------
+            
+            // 右侧分配角色保存
+            
+            $("#userrole_save").click(function () {
+                var selected = $('#treeview-checkable').treeview('getChecked');
+
+                if (selected.length != 1) {
+                    toastr.warning('请勾选一条选项');
+                } else {
+                    var ids = selected[0].href.split(",");
+                    console.log(ids[0] + " --- " + ids[1]);
+                    $.ajax({
+                        url:"/admin/updateUserRole.do",
+                        dataType:"json",
+                        type:"post",
+                        data:{"userroleid":ids[1],"roleid":ids[0]},
+                        success: function (result) {
+                            if (result) {
+                                toastr.success('保存成功！');
+                            } else {
+                                toastr.error('保存失败！');
+                            }
+                        }
+                    })
                 }
+
             });
-
-
+            
+            //-----------------
 
             // 右侧分配角色操作栏
 
             $('#role_open').click(function(){
 
-
-                $('#sampledata2').bringins({
-                    "position":"right",
-                    "color":"#fff",
-                    "width":"30%",
-                    "closeButton":"black"
+                //使用getSelections即可获得，row是json格式的数据
+                var getSelectRows = $("#table").bootstrapTable('getSelections', function (row) {
+                    return row;
                 });
+
+                if (getSelectRows.length > 1 || getSelectRows.length < 1) {
+                    toastr.warning('至少或至多选择一行数据！');
+                } else {
+
+                    loding(getSelectRows[0].userid, getSelectRows[0].username);
+                }
+
+
             });
+            //---------------------
 
             // 动态select下拉框赋值
 
@@ -360,12 +432,16 @@
                     }
                 });
             });
+            //----------------
 
             // 条件搜索按钮点击
             
             $("#btn_search").click(function () {
                 $("#table").bootstrapTable('refresh');
             });
+
+            //----------------
+
         });
 </script>
 </body>
